@@ -15,6 +15,7 @@ const PRIZES = [
   { id:"dream",   label:"🎢 American Dream",       desc:"The whole family goes!",            threshold:5000, color:"#00C9A7", oneTime:true },
 ];
 
+const BIBLE_STANDALONE_BONUS = 50;
 const DATA_KEY   = "collins-reading-data-2026";
 const READER_KEY = "collins-reading-myname-2026";
 const ADMIN_PIN  = "0629";
@@ -50,7 +51,7 @@ function emptyReader() {
 function getTotal(readerData) {
   let pts = 0;
   readerData.books.forEach(b => pts += b.points);
-  readerData.bibleDays.forEach(bd => { if (bd.standalone) pts += 150; });
+  readerData.bibleDays.forEach(bd => { if (bd.standalone) pts += BIBLE_STANDALONE_BONUS; });
   (readerData.adjustments || []).forEach(a => pts += a.delta);
   return Math.max(0, pts);
 }
@@ -415,7 +416,7 @@ function HomeView({ myName, readerData, totalPts, onLogBook, onShare, onRedeemPr
           {bibleAlready ? "✅ Bible chapter done today!" : "📖 Bible chapter today?"}
         </span>
         {!bibleAlready && (
-          <button onClick={onBibleOnly} style={{background:"#f5c842",border:"none",borderRadius:"1rem",padding:"0.35rem 0.9rem",fontWeight:700,fontSize:"0.8rem",cursor:"pointer",fontFamily:font}}>+150 pts</button>
+          <button onClick={onBibleOnly} style={{background:"#f5c842",border:"none",borderRadius:"1rem",padding:"0.35rem 0.9rem",fontWeight:700,fontSize:"0.8rem",cursor:"pointer",fontFamily:font}}>+{BIBLE_STANDALONE_BONUS} pts</button>
         )}
       </div>
 
